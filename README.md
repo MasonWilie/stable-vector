@@ -1,1 +1,1 @@
-# stable-vector
+A simple data-structure that gives you (some of) the spacial locality benefits of a vector, but with persistent references (references, pointers, iterators)
