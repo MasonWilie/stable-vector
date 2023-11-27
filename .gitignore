@@ -33,8 +33,5 @@
 
 # VSC
 .vscode/
-
-# CMake
-CMakeLists.txt
 build/
-main.cpp
+test/build/
