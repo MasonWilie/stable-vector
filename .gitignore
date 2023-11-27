@@ -37,3 +37,4 @@
 # CMake
 CMakeLists.txt
 build/
+main.cpp
