@@ -1,13 +1,12 @@
 #pragma once
 
-#include <new>
 #include <array>
 #include <limits>
+#include <memory>
+#include <new>
+#include <sstream>
 #include <type_traits>
 #include <vector>
-#include <stdexcept>
-#include <memory>
-#include <sstream>
 
 namespace sv
 {
