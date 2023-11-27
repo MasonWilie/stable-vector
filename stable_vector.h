@@ -56,10 +56,6 @@ class stable_vector
  public:
     stable_vector();
 
-    // stable_vector& operator=(const stable_vector& other);
-    // stable_vector& operator=(stable_vector&& other);
-    // stable_vector& operator=(std::initializer_list<T> ilist);
-
     size_type size() const noexcept;
     size_type max_size() const noexcept;
     size_type capacity() const noexcept;
