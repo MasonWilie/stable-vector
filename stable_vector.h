@@ -228,11 +228,7 @@ void stable_vector<T, BLOCK_SIZE>::push_back(const value_type& val)
 template <typename T, int BLOCK_SIZE>
 void stable_vector<T, BLOCK_SIZE>::push_back(value_type&& val)
 {
-    const auto& storage = create_next_storage();
-
-    ::new (&storage) value_type(std::move(val));
-    
-    ++_size;
+    emplace_back(std::move(val));
 }
 
 template <typename T, int BLOCK_SIZE>
