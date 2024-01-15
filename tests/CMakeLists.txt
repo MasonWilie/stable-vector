@@ -14,7 +14,7 @@ FetchContent_MakeAvailable(googletest)
 
 # Stable Vector Tests
 SET(SRC
-    constructor_tests.cpp
+    tests.cpp
 )
 
 ADD_EXECUTABLE(stable_vector_test main.cpp ${SRC})
