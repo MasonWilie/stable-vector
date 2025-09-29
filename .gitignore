@@ -35,3 +35,14 @@
 .vscode/
 build/
 test/build/
+
+# Bazel
+bazel-*
+bazel-*/
+*.bazelrc.user
+*.bazelproject
+.idea/
+*.iml
+*.iws
+*.ipr
+*.bazel.lock
