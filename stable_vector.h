@@ -50,6 +50,7 @@ class stable_vector {
 
  public:
   stable_vector();
+  ~stable_vector();
 
   size_type size() const noexcept;
   size_type max_size() const noexcept;
@@ -98,6 +99,13 @@ class stable_vector {
 template <typename T, int BLOCK_SIZE>
 stable_vector<T, BLOCK_SIZE>::stable_vector() : _size(0) {}
 
+template <typename T, int BLOCK_SIZE>
+stable_vector<T, BLOCK_SIZE>::~stable_vector() {
+  for (size_type i = 0; i < _size; ++i) {
+    std::launder(reinterpret_cast<value_type*>(&(*this)[i]))->~value_type();
+  }
+}
+ 
 template <typename T, int BLOCK_SIZE>
 inline auto stable_vector<T, BLOCK_SIZE>::size() const noexcept -> size_type {
   return _size;
