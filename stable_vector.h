@@ -79,8 +79,8 @@ class stable_vector {
   static constexpr const int EFFECTIVE_BLOCK_SIZE =
       ceil_to_power_of_two(BLOCK_SIZE);
 
-  using storage_t =
-      typename std::aligned_storage<sizeof(value_type), alignof(value_type)>::type;
+  using storage_t = typename std::aligned_storage<sizeof(value_type),
+                                                  alignof(value_type)>::type;
   using block_t = std::array<storage_t, EFFECTIVE_BLOCK_SIZE>;
   using block_ptr_t = std::unique_ptr<block_t>;
 
