@@ -112,7 +112,7 @@ inline auto stable_vector<T, BLOCK_SIZE>::max_size() const noexcept
 template <typename T, int BLOCK_SIZE>
 inline auto stable_vector<T, BLOCK_SIZE>::capacity() const noexcept
     -> size_type {
-  return _blocks.size() * BLOCK_SIZE;
+  return _blocks.size() * EFFECTIVE_BLOCK_SIZE;
 }
 
 template <typename T, int BLOCK_SIZE>
