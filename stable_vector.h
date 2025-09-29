@@ -266,6 +266,7 @@ void stable_vector<T, BLOCK_SIZE>::push_back(const value_type& val) {
   auto& storage = create_next_storage();
 
   ::new (&storage) value_type(val);
+  ++_size;
 }
 
 template <typename T, int BLOCK_SIZE>
@@ -277,7 +278,9 @@ template <typename T, int BLOCK_SIZE>
 template <class... Args>
 auto stable_vector<T, BLOCK_SIZE>::emplace_back(Args&&... args) -> reference {
   auto& storage = create_next_storage();
-  return *(::new (&storage) value_type(std::forward<Args>(args)...));
+  auto* obj = ::new (&storage) value_type(std::forward<Args>(args)...);
+  ++_size;
+  return *obj;
 }
 
 template <typename T, int BLOCK_SIZE>
@@ -304,8 +307,6 @@ auto stable_vector<T, BLOCK_SIZE>::create_next_storage() -> storage_t& {
   const auto block_offset = calculate_block_offset(_size);
 
   auto& storage = (*_blocks[block_index])[block_offset];
-
-  ++_size;
 
   return storage;
 }
