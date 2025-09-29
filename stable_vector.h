@@ -80,6 +80,9 @@ class stable_vector {
   template <class... Args>
   reference emplace_back(Args&&... args);
 
+  void pop_back();
+  void clear() noexcept;
+
  private:
   static constexpr const int EFFECTIVE_BLOCK_SIZE =
       ceil_to_power_of_two(BLOCK_SIZE);
@@ -275,6 +278,20 @@ template <class... Args>
 auto stable_vector<T, BLOCK_SIZE>::emplace_back(Args&&... args) -> reference {
   auto& storage = create_next_storage();
   return *(::new (&storage) value_type(std::forward<Args>(args)...));
+}
+
+template <typename T, int BLOCK_SIZE>
+void stable_vector<T, BLOCK_SIZE>::pop_back() {
+  if (!empty()) {
+    --_size;
+    std::launder(reinterpret_cast<value_type*>(&(*this)[_size]))->~value_type();
+  }
+}
+
+template <typename T, int BLOCK_SIZE>
+void stable_vector<T, BLOCK_SIZE>::clear() noexcept {
+  destroy_all_objects();
+  _size = 0;
 }
 
 template <typename T, int BLOCK_SIZE>
