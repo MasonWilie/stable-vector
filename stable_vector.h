@@ -50,6 +50,10 @@ class stable_vector {
 
  public:
   stable_vector();
+  stable_vector(const stable_vector& other);
+  stable_vector(stable_vector&& other) noexcept;
+  stable_vector& operator=(const stable_vector& other);
+  stable_vector& operator=(stable_vector&& other) noexcept;
   ~stable_vector();
 
   size_type size() const noexcept;
@@ -91,6 +95,7 @@ class stable_vector {
   void validate_index_bounds(const size_type index) const;
 
   storage_t& create_next_storage();
+  void destroy_all_objects() noexcept;
 
   std::vector<block_ptr_t> _blocks;
   size_type _size;
@@ -100,12 +105,55 @@ template <typename T, int BLOCK_SIZE>
 stable_vector<T, BLOCK_SIZE>::stable_vector() : _size(0) {}
 
 template <typename T, int BLOCK_SIZE>
+stable_vector<T, BLOCK_SIZE>::stable_vector(const stable_vector& other)
+    : _size(0) {
+  reserve(other.size());
+  for (size_type i = 0; i < other.size(); ++i) {
+    push_back(other[i]);
+  }
+}
+
+template <typename T, int BLOCK_SIZE>
+stable_vector<T, BLOCK_SIZE>::stable_vector(stable_vector&& other) noexcept
+    : _blocks(std::move(other._blocks)), _size(other._size) {
+  other._size = 0;
+}
+
+template <typename T, int BLOCK_SIZE>
+auto stable_vector<T, BLOCK_SIZE>::operator=(const stable_vector& other)
+    -> stable_vector& {
+  if (this != &other) {
+    stable_vector temp(other);
+    *this = std::move(temp);
+  }
+  return *this;
+}
+
+template <typename T, int BLOCK_SIZE>
+auto stable_vector<T, BLOCK_SIZE>::operator=(stable_vector&& other) noexcept
+    -> stable_vector& {
+  if (this != &other) {
+    destroy_all_objects();
+
+    _blocks = std::move(other._blocks);
+    _size = other._size;
+    other._size = 0;
+  }
+  return *this;
+}
+
+template <typename T, int BLOCK_SIZE>
 stable_vector<T, BLOCK_SIZE>::~stable_vector() {
+  destroy_all_objects();
+}
+
+template <typename T, int BLOCK_SIZE>
+void stable_vector<T, BLOCK_SIZE>::destroy_all_objects() noexcept {
   for (size_type i = 0; i < _size; ++i) {
     std::launder(reinterpret_cast<value_type*>(&(*this)[i]))->~value_type();
   }
 }
- 
+
 template <typename T, int BLOCK_SIZE>
 inline auto stable_vector<T, BLOCK_SIZE>::size() const noexcept -> size_type {
   return _size;
