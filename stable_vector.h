@@ -27,7 +27,7 @@ constexpr int ceil_to_power_of_two(const int original,
 
 template <typename unsigned_int_t>
 constexpr bool is_power_of_two(const unsigned_int_t number) {
-  return number != 0 || (number & (number - 1)) == 0;
+  return number != 0 && (number & (number - 1)) == 0;
 }
 
 template <int DIVISOR>
