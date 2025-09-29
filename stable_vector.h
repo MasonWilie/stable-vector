@@ -80,7 +80,7 @@ class stable_vector {
       ceil_to_power_of_two(BLOCK_SIZE);
 
   using storage_t =
-      std::aligned_storage_t<EFFECTIVE_BLOCK_SIZE, alignof(value_type)>;
+      typename std::aligned_storage<sizeof(value_type), alignof(value_type)>::type;
   using block_t = std::array<storage_t, EFFECTIVE_BLOCK_SIZE>;
   using block_ptr_t = std::unique_ptr<block_t>;
 
